@@ -2,6 +2,7 @@ import os
 
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
+from datetime import timedelta
 
 
 from decouple import config,Csv
@@ -30,6 +31,10 @@ INSTALLED_APPS = [
     'apps.users.apps.UsersConfig',
     'apps.TestCase',
     "rest_framework",
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+
+    'drf_spectacular',
 
 ]
 
@@ -113,3 +118,16 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=200),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}

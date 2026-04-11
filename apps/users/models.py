@@ -12,8 +12,9 @@ class RoleChoice(models.TextChoices):
 class User(AbstractUser):
     name = models.CharField()
     surname = models.CharField()
+    email = models.EmailField(unique=True)
     phone = PhoneNumberField(unique=True)
-    image = models.ImageField(upload_to='user/')
+    image = models.ImageField(upload_to='user/',null=True,blank=True,default='default/default.png')
     role = models.CharField(choices=RoleChoice.choices,default=RoleChoice.UNKNOWN)
 
     created_at = models.DateTimeField(auto_now_add=True)
