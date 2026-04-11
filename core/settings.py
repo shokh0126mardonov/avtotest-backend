@@ -1,3 +1,5 @@
+import os
+
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 
@@ -26,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.users.apps.UsersConfig',
+    'apps.TestCase',
     "rest_framework",
 
 ]
@@ -94,19 +97,19 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Samarkand'
 
 USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
+AUTH_USER_MODEL = 'users.User'
 
 STATIC_URL = 'static/'
+
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
