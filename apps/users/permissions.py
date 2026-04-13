@@ -14,12 +14,7 @@ class StudentPermissions(BasePermission):
 
     def has_permission(self, request, view):
         return request.user.role == RoleChoice.STUDENT
-    
-class UnknownPermissions(BasePermission):
-    message = 'siz bu methoddan foydalana olmaysin'
-
-    def has_permission(self, request, view):
-        return request.user.role == RoleChoice.UNKNOWN
+   
     
 class InstructorPermissions(BasePermission):
     message = 'siz bu methoddan foydalana olmaysin'

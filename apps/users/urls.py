@@ -16,8 +16,8 @@ urlpatterns = [
     path("",UserApiViewSets.as_view({'get':'list',"post":"create"})),
     path("<int:pk>/",UserApiViewSets.as_view({'get':'retrieve','delete':"destroy","patch":'partial_update'})),
 
-    path('username/',UserApiView.as_view()),
-    path('set-password/',UserApiView.as_view())
+    path('username/',UserApiView.as_view({'get':'username'}),name='get-username'),
+    path('set-password/',UserApiView.as_view({'put':'password'}),name='set-password')
 
 
 ]
