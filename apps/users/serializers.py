@@ -30,6 +30,13 @@ class GetByUsername(serializers.Serializer):
 
 class UserSetPasswordSerializers(serializers.Serializer):
     password = serializers.CharField(max_length=128)
+    new_password = serializers.CharField(max_length=128)
+
+    def validate(self, attrs):
+        if attrs['password'] == attrs['new_password']:
+            return serializers.ValidationError('parol va yangi parol teng bo\'lmasligi kerak!')
+        
+        return attrs
 
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)

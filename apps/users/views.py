@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -40,16 +41,9 @@ class UserApiView(APIView):
 
         return Response(UserSerializers(user).data)
     
-    def put(self,request:Request)->Request:
-        serializers = UserSetPasswordSerializers(data = request.data)
-        serializers.is_valid(raise_exception=True)
-
-        password = serializers.get('password')
-        serializers.update(request.user,password)
-
-
-
-
+    def put(self,request:Request)->Response:
+        serializer = UserSetPasswordSerializers(data = request.data)
+    
 
 
 class LoginUser(TokenObtainPairView):

@@ -22,5 +22,21 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
     
+    @property
+    def admin(self):
+        return self.role == RoleChoice.ADMIN
+    
+    @property
+    def instructor(self):
+        return self.role == RoleChoice.INSTRUCTOR
+    
+    @property
+    def student(self):
+        return self.role == RoleChoice.STUDENT
+    
+    @property
+    def unknow(self):
+        return self.role == RoleChoice.UNKNOWN
+    
     class Meta:
         ordering = ['-pk']
