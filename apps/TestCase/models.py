@@ -6,11 +6,11 @@ class TestCase(models.Model):
     question_uzk = models.TextField()
     question_ru = models.TextField()
 
-    explanation_uz = models.TextField()
-    explanation_uzk = models.TextField()
-    explanation_ru = models.TextField()
+    explanation_uz = models.TextField(null=True,blank=True)
+    explanation_uzk = models.TextField(null=True,blank=True)
+    explanation_ru = models.TextField(null=True,blank=True)
 
-    media = models.FileField()
+    media = models.FileField(upload_to='TestCase/',null=True,blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

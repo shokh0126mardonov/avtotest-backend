@@ -11,3 +11,17 @@ class TestCaseViewSets(ModelViewSet):
     authentication_classes = [JWTAuthentication]
     queryset = TestCase.objects.all()
     serializer_class = TestCaseSerializers
+
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+
+    #     self.perform_create(serializer)
+
+    #     return Response(
+    #         {
+    #             "message": "TestCase muvaffaqiyatli yaratildi",
+    #             "data": serializer.data
+    #         },
+    #         status=status.HTTP_201_CREATED
+    #     )

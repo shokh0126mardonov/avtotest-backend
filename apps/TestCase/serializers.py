@@ -18,3 +18,4 @@ class TestCaseSerializers(serializers.ModelSerializer):
             raise serializers.ValidationError('ruxsat etilmagan file turi',400)
         
         return attrs
+
