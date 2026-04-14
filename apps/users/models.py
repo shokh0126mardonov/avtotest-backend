@@ -19,7 +19,7 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.username
+        return f"{self.pk} {self.username}"
     
     @property
     def admin(self):
