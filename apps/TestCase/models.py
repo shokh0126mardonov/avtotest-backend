@@ -2,20 +2,20 @@ from django.db import models
 
 
 class TestCase(models.Model):
-    question_uz = models.TextField(null=True, blank=True)
-    question_uzk = models.TextField(null=True, blank=True)
-    question_ru = models.TextField(null=True, blank=True)
+    question_uz = models.TextField()
+    question_uzk = models.TextField()
+    question_ru = models.TextField()
 
-    explanation_uz = models.TextField(null=True, blank=True)
-    explanation_uzk = models.TextField(null=True, blank=True)
-    explanation_ru = models.TextField(null=True, blank=True)
+    explanation_uz = models.TextField()
+    explanation_uzk = models.TextField()
+    explanation_ru = models.TextField()
 
-    media = models.CharField(max_length=500, null=True, blank=True)
+    media = models.FileField()
 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"TestCase #{self.number}"
+        return f"TestCase {self.pk}#"
     
 
 class TestAnswer(models.Model):

@@ -26,7 +26,7 @@ from rest_framework import status
 class UserApiViewSets(ModelViewSet):
     queryset = User.objects.all()
     def get_permissions(self):
-        if self.action in ['list', 'create', 'retrieve','destroy']:
+        if self.action in ['list', 'create', 'retrieve','destroy','partial_update']:
             permission_classes = [IsAuthenticated, AdminPermissions]
         else:
             permission_classes = [IsAuthenticated] 
@@ -34,7 +34,7 @@ class UserApiViewSets(ModelViewSet):
 
 
     def get_serializer_class(self):
-        if self.action == "create":
+        if self.action in ["create"]:
             return UserCreateSerializers
         return UserSerializers
     
