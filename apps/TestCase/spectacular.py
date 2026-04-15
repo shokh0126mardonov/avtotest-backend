@@ -9,3 +9,10 @@ list_schema = extend_schema(
         OpenApiParameter(name='page_size', type=OpenApiTypes.INT),
     ]
 )
+
+
+retrieve_schema = extend_schema(
+    parameters=[
+        OpenApiParameter(name='lang', type=OpenApiTypes.STR)
+    ]
+)

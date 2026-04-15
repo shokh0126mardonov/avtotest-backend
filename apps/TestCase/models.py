@@ -34,7 +34,7 @@ class TestAnswer(models.Model):
     is_correct = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Answer({self.id})"
+        return f"Answer({self.id}) TestCase({self.test_case.pk})"
 
     class Meta:
         ordering = ['-pk']

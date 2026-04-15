@@ -7,8 +7,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from apps.users.permissions import AdminPermissions
 from .models import TestAnswer,TestCase
-from .serializers import TestCaseSerializers
-from .spectacular import list_schema
+from .serializers import TestCaseSerializers,TestCaseCreateSerializers
+from .spectacular import list_schema,retrieve_schema
 from .pagination import TestCasePagination
 
 
@@ -16,8 +16,13 @@ class TestCaseViewSets(ModelViewSet):
     permission_classes = [IsAuthenticated,AdminPermissions]
     authentication_classes = [JWTAuthentication]
     queryset = TestCase.objects.all()
-    serializer_class = TestCaseSerializers
     pagination_class = TestCasePagination
+
+    def get_serializer_class(self):
+        if self.action in ['create','partial_update']:
+            return TestCaseCreateSerializers
+        return TestCaseSerializers
+
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -27,7 +32,6 @@ class TestCaseViewSets(ModelViewSet):
     def get_queryset(self):
         qs = super().get_queryset()
 
-        # 🔹 lang filter
         lang = self.request.query_params.get('lang')
         if lang == 'uz':
             qs = qs.exclude(question_uz__isnull=True)
@@ -67,3 +71,7 @@ class TestCaseViewSets(ModelViewSet):
             return Response(serializer.data)
 
         return super().list(request, *args, **kwargs)
+    
+    @retrieve_schema
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
