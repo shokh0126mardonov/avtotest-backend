@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -24,7 +25,9 @@ from rest_framework import status
 
 
 class UserApiViewSets(ModelViewSet):
+    pagination_class = PageNumberPagination
     queryset = User.objects.all()
+    
     def get_permissions(self):
         if self.action in ['list', 'create', 'retrieve','destroy','partial_update']:
             permission_classes = [IsAuthenticated, AdminPermissions]
@@ -37,6 +40,8 @@ class UserApiViewSets(ModelViewSet):
         if self.action in ["create"]:
             return UserCreateSerializers
         return UserSerializers
+    
+
     
 
 
@@ -58,6 +63,8 @@ class UserApiView(ModelViewSet):
 
     @action(methods=['get'],url_name='get-username',detail=True)
     def username(self,request:Request)->Response:
+        ids = list(User.objects.values_list('id', flat=True))
+        print(ids)
         serializer = self.get_serializer(data = request.data)
         serializer.is_valid(raise_exception=True)
         username = serializer.validated_data.get('username')

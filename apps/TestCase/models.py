@@ -17,6 +17,8 @@ class TestCase(models.Model):
     def __str__(self):
         return f"TestCase {self.pk}#"
     
+    class Meta:
+        ordering = ['-pk']
 
 class TestAnswer(models.Model):
     test_case = models.ForeignKey(
@@ -33,3 +35,6 @@ class TestAnswer(models.Model):
 
     def __str__(self):
         return f"Answer({self.id})"
+
+    class Meta:
+        ordering = ['-pk']
