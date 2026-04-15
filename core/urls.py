@@ -26,7 +26,8 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path("api/User/",include("apps.users.urls")),
-    path('api/TestCase/',include('apps.TestCase.urls'))
+    path('api/TestCase/',include('apps.TestCase.urls')),
+    path('api/Group/',include('apps.Group.urls'))
 ]
 
 if settings.DEBUG:

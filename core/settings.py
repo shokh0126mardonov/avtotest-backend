@@ -30,6 +30,8 @@ INSTALLED_APPS = [
 
     'apps.users.apps.UsersConfig',
     'apps.TestCase',
+    'apps.Group',
+
     "rest_framework",
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
