@@ -1,9 +1,17 @@
 from django.db import models
+import uuid
 
+def roadsign_upload_path(instance, filename):
+    ext = filename.split('.')[-1]
+    return f'RoadSign/{uuid.uuid4()}.{ext}'
+
+def roadsingfolder_upload_path(instance,filename):
+    ext = filename.split('.')[-1]
+    return f'RoadSignFolder/{uuid.uuid4()}.{ext}'
 
 class RoadSignFolder(models.Model):    
-    name = models.CharField(max_length=255)
-    icon_path = models.ImageField(upload_to='RoadSignFolder/')
+    name = models.CharField(max_length=255,unique=True)
+    icon_path = models.ImageField(upload_to=roadsingfolder_upload_path)
 
     parent = models.ForeignKey(
         'self',
@@ -28,7 +36,7 @@ class RoadSignFolder(models.Model):
 class RoadSign(models.Model):
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=50, null=True, blank=True)
-    icon_path = models.ImageField(upload_to='RoadSign/')
+    icon_path = models.ImageField(upload_to=roadsign_upload_path)
     description = models.TextField(null=True, blank=True)
 
     folder = models.ForeignKey(
