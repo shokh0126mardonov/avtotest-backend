@@ -39,7 +39,7 @@ class TestCaseSerializers(serializers.ModelSerializer):
         return attrs
 
 
-    def get_question(self, obj):
+    def get_question(self, obj)->str:
         lang = self.context.get('lang', 'uz')
 
         if lang == 'ru':
@@ -48,7 +48,7 @@ class TestCaseSerializers(serializers.ModelSerializer):
             return obj.question_uzk
         return obj.question_uz
 
-    def get_explanation(self, obj):
+    def get_explanation(self, obj)->str:
         lang = self.context.get('lang', 'uz')
 
         if lang == 'ru':
@@ -113,7 +113,6 @@ class TestCaseCreateSerializers(serializers.ModelSerializer):
                         answer.save()
                         incoming_ids.append(answer_id)
 
-                    # 🔹 CREATE
                     else:
                         new_answer = TestAnswer.objects.create(
                             test_case=instance,
@@ -121,7 +120,6 @@ class TestCaseCreateSerializers(serializers.ModelSerializer):
                         )
                         incoming_ids.append(new_answer.id)
 
-                # 🔥 DELETE (DB’da bor, request’da yo‘q)
                 for answer_id, answer in existing_answers.items():
                     if answer_id not in incoming_ids:
                         answer.delete()
