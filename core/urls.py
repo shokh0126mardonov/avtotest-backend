@@ -12,7 +12,7 @@ urlpatterns = [
     path("api/User/",include("apps.users.urls")),
     path('api/TestCase/',include('apps.TestCase.urls')),
     path('api/Group/',include('apps.Group.urls')),
-    path('api/Roadsign',include('apps.RoadSign.urls'))
+    path('api/Roadsign/',include('apps.RoadSign.urls'))
 ]
 
 if settings.DEBUG:
