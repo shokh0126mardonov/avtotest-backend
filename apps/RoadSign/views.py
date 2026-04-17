@@ -12,9 +12,11 @@ class RoadSignViewsets(ModelViewSet):
     serializer_class = RoadSignSerializer
 
     def get_permissions(self):
-        if self.action == 'get':
-            return [IsAuthenticated]
-        return [IsAuthenticated,AdminPermissions]
+        if self.request.method == 'GET':
+            permission_classes =  [IsAuthenticated]
+        else:
+            permission_classes =  [IsAuthenticated,AdminPermissions]
+        return [permission() for permission in permission_classes]
 
 
 class RoadSignFolderViewsets(ModelViewSet):
@@ -22,6 +24,9 @@ class RoadSignFolderViewsets(ModelViewSet):
     serializer_class = RoadSignFolderSerializer
 
     def get_permissions(self):
-        if self.action == 'get':
-            return [IsAuthenticated]
-        return [IsAuthenticated,AdminPermissions]
+        if self.request.method == 'GET':
+            permission_classes =  [IsAuthenticated]
+        else:
+            permission_classes =  [IsAuthenticated,AdminPermissions]    
+
+        return [permission() for permission in permission_classes]
