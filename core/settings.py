@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'apps.TestCase',
     'apps.Group',
     'apps.RoadSign',
+    'apps.Folder',
 
     "rest_framework",
     'rest_framework_simplejwt',
@@ -109,9 +110,10 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Samarkand'
 
+USE_TZ = True
+
 USE_I18N = True
 
-USE_TZ = True
 
 AUTH_USER_MODEL = 'users.User'
 
