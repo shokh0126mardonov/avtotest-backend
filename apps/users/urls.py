@@ -12,13 +12,10 @@ urlpatterns = [
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
 
-
     path("",UserApiViewSets.as_view({'get':'list',"post":"create"})),
     path("<int:pk>/",UserApiViewSets.as_view({'get':'retrieve','delete':"destroy","patch":'partial_update'})),
 
     path('username/',UserApiView.as_view({'get':'username'}),name='get-username'),
     path('set-password/',UserApiView.as_view({'put':'password'}),name='set-password')
-
-
 ]
 

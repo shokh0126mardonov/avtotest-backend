@@ -8,12 +8,13 @@ class Group(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='groups/', null=True, blank=True)
 
-    instructor = models.ForeignKey(
+    instructor = models.OneToOneField(
         User,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='instructed_groups'
+        related_name='instructed_groups',
+        unique=True
     )
 
     users = models.ManyToManyField(
