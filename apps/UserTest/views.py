@@ -74,3 +74,4 @@ class GroupInstructor(APIView):
         group = get_object_or_404(Group,pk = group_id)
 
         return Response(UserSerializers(group.instructor).data)
+    
