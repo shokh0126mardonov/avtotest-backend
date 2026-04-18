@@ -14,6 +14,8 @@ urlpatterns = [
     path('api/Group/',include('apps.Group.urls')),
     path('api/Roadsign/',include('apps.RoadSign.urls')),
     path('api/',include('apps.Folder.urls')),
+    path('api/UserTest/',include('apps.UserTest.urls')),
+
 ]
 
 if settings.DEBUG:

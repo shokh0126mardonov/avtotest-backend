@@ -23,10 +23,12 @@ class Group(models.Model):
     )
 
     is_active = models.BooleanField(default=True)
-    is_deleted = models.BooleanField(default=False)
-    deleted_date = models.DateTimeField(null=True, blank=True)
 
     created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-pk']
+        verbose_name = 'User Group'
 
     def __str__(self):
         return self.name or str(self.id)

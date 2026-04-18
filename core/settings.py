@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'apps.Group',
     'apps.RoadSign',
     'apps.Folder',
+    'apps.UserTest',
 
     "rest_framework",
     'rest_framework_simplejwt',
