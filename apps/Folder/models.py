@@ -24,22 +24,11 @@ def media_file_upload_path(instanse,filename):
 
 class MediaFile(models.Model):
     
-    file = models.FileField(
-        upload_to=media_file_upload_path
-    )
+    file = models.FileField(upload_to=media_file_upload_path)
+    file_name = models.CharField(max_length=255,blank=True)
+    folder = models.ForeignKey(Folder,on_delete=models.CASCADE,related_name="files")
 
-    file_name = models.CharField(
-        max_length=255,
-        blank=True
-    )
-
-    folder = models.ForeignKey(
-        Folder,
-        on_delete=models.CASCADE,
-        related_name="files",
-    )
-
-    created_at = models.DateTimeField(auto_now_add=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["-pk"]

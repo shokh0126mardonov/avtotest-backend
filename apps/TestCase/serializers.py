@@ -105,7 +105,6 @@ class TestCaseCreateSerializers(serializers.ModelSerializer):
                 for answer_data in answers_data:
                     answer_id = answer_data.get('id')
 
-                    # 🔹 UPDATE
                     if answer_id and answer_id in existing_answers:
                         answer = existing_answers[answer_id]
                         for attr, value in answer_data.items():
