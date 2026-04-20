@@ -15,13 +15,13 @@ class Exam(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = "exam"
-        ordering = ["-created_at"]
+        ordering = ["-pk"]
 
     def __str__(self):
         return f"Exam {self.id} - User {self.user_id}"
     
 class ExamTestCase(models.Model):
+    
     exam = models.ForeignKey(
         Exam,
         on_delete=models.CASCADE,

@@ -17,6 +17,7 @@ class TestAnswerSerializer(serializers.ModelSerializer):
 class TestCaseSerializers(serializers.ModelSerializer):
     question = serializers.SerializerMethodField()
     explanation = serializers.SerializerMethodField()
+    answers = TestAnswerSerializer(many=True, read_only=True)
 
     class Meta:
         model = TestCase
@@ -25,6 +26,7 @@ class TestCaseSerializers(serializers.ModelSerializer):
             'question',
             'explanation',
             'media',
+            'answers', 
             'created_at'
         ]
 
@@ -92,7 +94,6 @@ class TestCaseCreateSerializers(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         answers_data = validated_data.pop('answers', None)
 
-        # 🔹 parent update
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
