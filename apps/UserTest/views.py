@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from apps.users.permissions import AdminPermissions,InstructorPermissions
 from apps.users.serializers import UserSerializers
 from apps.Group.models import Group
-from .serializers import UserGroupSerializers,GroupIdSerializers,GroupUserSerializers
+from .serializers import UserGroupSerializers,GroupIdSerializers,GroupUserSerializers,SubmitAnswerSerializers
 
 User = get_user_model()
 
@@ -75,3 +75,10 @@ class GroupInstructor(APIView):
 
         return Response(UserSerializers(group.instructor).data)
     
+class SubmitAnswerViews(APIView):
+
+    def post(self,request:Request)->Response:
+        serializers = SubmitAnswerSerializers(data = request.data)
+        serializers.is_valid(raise_exception=True)
+
+        return Response('status ok')
