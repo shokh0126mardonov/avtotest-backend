@@ -14,7 +14,7 @@ class ExamSerializers(serializers.ModelSerializer):
     user = UserSerializers(read_only=True)
     class Meta:
         model = Exam
-        fields = ['pk','user','created_at']
+        fields = ['pk','user','created_at','correct_answer','total_count']
 
 
 
@@ -76,9 +76,12 @@ class SubmitAnswerSerializers(serializers.Serializer):
                 test_case = testcase,
                 selected_answer = selected_answer
             )
+        exam.correct_answer = correct_answer
+        exam.total_count = total_test
+        exam.save()
 
         return {
                 "exam_id": exam.id,
-                "correct_answers": correct_answer,
-                "total_questions": total_test
+                "correct_answers": exam.correct_answer,
+                "total_questions": exam.total_count
             }

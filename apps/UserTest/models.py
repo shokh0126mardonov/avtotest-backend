@@ -12,6 +12,8 @@ class Exam(models.Model):
         on_delete=models.CASCADE,
         related_name="exams"
     )
+    correct_answer = models.PositiveSmallIntegerField(null=True,blank=True)
+    total_count = models.PositiveSmallIntegerField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
