@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from apps.users.permissions import AdminPermissions,InstructorPermissions
 from apps.users.serializers import UserSerializers
 from apps.Group.models import Group
-from .serializers import UserGroupSerializers,GroupIdSerializers,GroupUserSerializers,SubmitAnswerSerializers
+from .serializers import UserGroupSerializers,GroupIdSerializers,GroupUserSerializers,SubmitAnswerSerializers,ExamSerializers
 
 User = get_user_model()
 
@@ -81,4 +81,6 @@ class SubmitAnswerViews(APIView):
         serializers = SubmitAnswerSerializers(data = request.data)
         serializers.is_valid(raise_exception=True)
 
-        return Response('status ok')
+        data = serializers.save()
+
+        return Response(ExamSerializers(data).data)
