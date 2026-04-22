@@ -10,6 +10,7 @@ from apps.users.permissions import AdminPermissions,InstructorPermissions
 from apps.users.serializers import UserSerializers
 from apps.Group.models import Group
 from .serializers import UserGroupSerializers,GroupIdSerializers,GroupUserSerializers,SubmitAnswerSerializers,ExamSerializers
+from .models import Exam
 
 User = get_user_model()
 
@@ -81,4 +82,15 @@ class SubmitAnswerViews(APIView):
         serializers = SubmitAnswerSerializers(data = request.data)
         serializers.is_valid(raise_exception=True)
         data = serializers.save()
-        return Response(data)
+        return Response(ExamSerializers(data).data)
+
+
+class GetExamApiView(APIView):
+    def get(self,request:Request,pk)->Response:
+        exam = get_object_or_404(Exam,pk = pk)
+        return Response(ExamSerializers(exam).data)
+
+class CheckExamApiview(APIView):
+    def get(self,request:Request,pk)->Response:
+        exam = get_object_or_404(Exam,pk = pk)
+        return Response(ExamSerializers(exam).data)

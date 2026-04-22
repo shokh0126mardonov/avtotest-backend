@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
+from django.db import transaction
 from rest_framework import serializers
 
 from apps.TestCase.models import TestAnswer,TestCase
@@ -47,41 +47,47 @@ class ExamTestCaseSerializers(serializers.Serializer):
 
 
 class SubmitAnswerSerializers(serializers.Serializer):
-    user_id = serializers.IntegerField(min_value = 1)
-    examTestCases = ExamTestCaseSerializers(many = True)
+    user_id = serializers.IntegerField(min_value=1)
+    examTestCases = ExamTestCaseSerializers(many=True)
 
+    def validate_examTestCases(self, value):
+        ids = [i['testCaseId'] for i in value]
+        if len(ids) != len(set(ids)):
+            raise serializers.ValidationError("Duplicate testCaseId")
+        return value
+
+    @transaction.atomic
     def create(self, validated_data):
-        user_id = validated_data.get('user_id')
-        examTestCases = validated_data.get('examTestCases')
+        user_id = validated_data['user_id']
+        examTestCases = validated_data['examTestCases']
 
-        exam = Exam.objects.create(
-            user = User.objects.get(pk = user_id)
-        )
+        exam = Exam.objects.create(user_id=user_id)
 
-        total_test = len(examTestCases)
+        testcase_ids = [i['testCaseId'] for i in examTestCases]
+        answer_ids = [i['selectedAnswerId'] for i in examTestCases]
+
+        testcases = TestCase.objects.in_bulk(testcase_ids)
+        answers = TestAnswer.objects.in_bulk(answer_ids)
         correct_answer = 0
 
         for data in examTestCases:
-            testcase_id = data.get('testCaseId')
-            answer_id = data.get('selectedAnswerId')
+            tc = testcases.get(data['testCaseId'])
+            ans = answers.get(data['selectedAnswerId'])
 
-            testcase = get_object_or_404(TestCase,pk=testcase_id)
-            selected_answer = get_object_or_404(TestAnswer,pk=answer_id)
+            if not tc or not ans:
+                raise serializers.ValidationError("Invalid testCaseId or answerId")
 
-            if selected_answer.is_correct:
+            if ans.is_correct:
                 correct_answer += 1
 
-            ExamTestCase.objects.get_or_create(
-                exam = exam,
-                test_case = testcase,
-                selected_answer = selected_answer
+            ExamTestCase.objects.update_or_create(
+                exam=exam,
+                test_case=tc,
+                defaults={"selected_answer": ans}
             )
-        exam.correct_answer = correct_answer
-        exam.total_count = total_test
-        exam.save()
 
-        return {
-                "exam_id": exam.id,
-                "correct_answers": exam.correct_answer,
-                "total_questions": exam.total_count
-            }
+        exam.correct_answer = correct_answer
+        exam.total_count = len(examTestCases)
+        exam.save(update_fields=["correct_answer", "total_count"])
+
+        return exam
