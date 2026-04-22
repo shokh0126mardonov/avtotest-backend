@@ -80,7 +80,5 @@ class SubmitAnswerViews(APIView):
     def post(self,request:Request)->Response:
         serializers = SubmitAnswerSerializers(data = request.data)
         serializers.is_valid(raise_exception=True)
-
         data = serializers.save()
-
-        return Response(ExamSerializers(data).data)
+        return Response(data)

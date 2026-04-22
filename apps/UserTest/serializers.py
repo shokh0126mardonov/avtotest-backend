@@ -58,13 +58,27 @@ class SubmitAnswerSerializers(serializers.Serializer):
             user = User.objects.get(pk = user_id)
         )
 
+        total_test = len(examTestCases)
+        correct_answer = 0
+
         for data in examTestCases:
-            testcase = data.get('testCaseId')
-            answer = data.get('selectedAnswerId')
+            testcase_id = data.get('testCaseId')
+            answer_id = data.get('selectedAnswerId')
+
+            testcase = get_object_or_404(TestCase,pk=testcase_id)
+            selected_answer = get_object_or_404(TestAnswer,pk=answer_id)
+
+            if selected_answer.is_correct:
+                correct_answer += 1
 
             ExamTestCase.objects.get_or_create(
                 exam = exam,
-                test_case = get_object_or_404(TestCase,pk = testcase),
-                selected_answer = get_object_or_404(TestAnswer,pk=answer)
+                test_case = testcase,
+                selected_answer = selected_answer
             )
-        return exam
+
+        return {
+                "exam_id": exam.id,
+                "correct_answers": correct_answer,
+                "total_questions": total_test
+            }
