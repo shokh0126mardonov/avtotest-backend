@@ -45,7 +45,6 @@ class ExamTestCaseSerializers(serializers.Serializer):
     testCaseId = serializers.IntegerField(min_value = 1)
     selectedAnswerId = serializers.IntegerField(min_value = 1)
 
-
 class SubmitAnswerSerializers(serializers.Serializer):
     user_id = serializers.IntegerField(min_value=1)
     examTestCases = ExamTestCaseSerializers(many=True)
