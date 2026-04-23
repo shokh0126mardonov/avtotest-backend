@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404,get_list_or_404
 from django.contrib.auth import get_user_model
 
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from apps.users.permissions import AdminPermissions,InstructorPermissions
 from apps.users.serializers import UserSerializers
@@ -17,7 +18,7 @@ User = get_user_model()
 
 class UserGroupViews(APIView):
     permission_classes = [IsAuthenticated,(AdminPermissions | InstructorPermissions)]
-
+    authentication_classes = [JWTAuthentication]
 
     def get(self, request:Request):
         serializer = GroupIdSerializers(data = request.data)
@@ -67,6 +68,7 @@ class UserGroupViews(APIView):
 
 class GroupInstructor(APIView):
     permission_classes = [IsAuthenticated,AdminPermissions]
+    authentication_classes = [JWTAuthentication]
 
     def get(self, request:Request):
         serializer = GroupIdSerializers(data = request.data)
@@ -88,6 +90,8 @@ class SubmitAnswerViews(APIView):
 from rest_framework.generics import ListAPIView
 
 class GetExamApiView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     serializer_class = ExamSerializers
     pagination_class = PageNumberPagination
 
@@ -96,6 +100,8 @@ class GetExamApiView(ListAPIView):
         return Exam.objects.filter(user_id=user_id).order_by('-id')
 
 class CheckExamApiview(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     pagination_class = PageNumberPagination
     serializer_class = ExamSerializers
 
