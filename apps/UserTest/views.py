@@ -1,6 +1,7 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,get_list_or_404
 from django.contrib.auth import get_user_model
 
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -84,13 +85,21 @@ class SubmitAnswerViews(APIView):
         data = serializers.save()
         return Response(ExamSerializers(data).data)
 
+from rest_framework.generics import ListAPIView
 
-class GetExamApiView(APIView):
-    def get(self,request:Request,pk)->Response:
-        exam = get_object_or_404(Exam,pk = pk)
-        return Response(ExamSerializers(exam).data)
+class GetExamApiView(ListAPIView):
+    serializer_class = ExamSerializers
+    pagination_class = PageNumberPagination
 
-class CheckExamApiview(APIView):
-    def get(self,request:Request,pk)->Response:
-        exam = get_object_or_404(Exam,pk = pk)
-        return Response(ExamSerializers(exam).data)
+    def get_queryset(self):
+        user_id = self.kwargs['pk']
+        return Exam.objects.filter(user_id=user_id).order_by('-id')
+
+class CheckExamApiview(ListAPIView):
+    pagination_class = PageNumberPagination
+    serializer_class = ExamSerializers
+
+    def get_queryset(self):
+        exam_id = self.kwargs['pk']
+        return Exam.objects.filter(pk = exam_id).order_by('-id')
+    
