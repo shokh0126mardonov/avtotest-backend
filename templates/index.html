@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Test</title>
+</head>
+<body>
+    <h2>Login</h2>
+
+    <input type="text" id="username" placeholder="Username"><br><br>
+    <input type="password" id="password" placeholder="Password"><br><br>
+
+    <button onclick="login()">Login</button>
+
+    <pre id="result"></pre>
+
+    <script>
+        async function generateDeviceId() {
+    let stored = localStorage.getItem("device_id");
+    if (stored) return stored;
+
+    const data = [
+        navigator.userAgent,
+        navigator.language,
+        navigator.platform,
+        screen.width + "x" + screen.height,
+        Intl.DateTimeFormat().resolvedOptions().timeZone
+    ].join("::");
+
+    let deviceId;
+
+    if (window.crypto && crypto.subtle) {
+        const encoder = new TextEncoder();
+        const hashBuffer = await crypto.subtle.digest(
+            "SHA-256",
+            encoder.encode(data)
+        );
+
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        deviceId = hashArray
+            .map(b => b.toString(16).padStart(2, "0"))
+            .join("");
+    } else {
+        // 🔥 fallback (weak but works)
+        deviceId = btoa(data).slice(0, 64);
+    }
+
+    localStorage.setItem("device_id", deviceId);
+    return deviceId;
+}
+
+        async function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const device_id = await generateDeviceId();
+
+            const response = await fetch("http://192.168.1.139:8000/api/User/get-ip/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username,
+                    password,
+                    device_id
+                })
+            });
+
+            const data = await response.json();
+
+            document.getElementById("result").innerText =
+                JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>

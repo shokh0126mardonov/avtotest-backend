@@ -1,24 +1,27 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import authenticate
+
 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
 
-from .serializers import UserSerializers,UserCreateSerializers,GetByUsername,UserSetPasswordSerializers
+
+from .serializers import UserSerializers,UserCreateSerializers,GetByUsername,UserSetPasswordSerializers,LoginSerializers
 from .permissions import AdminPermissions,StudentPermissions,InstructorPermissions
+from .models import DeviceLock
+
 User = get_user_model()
 
 
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -80,24 +83,46 @@ class UserApiView(ModelViewSet):
     
 
 
-class LoginUser(TokenObtainPairView):
-    def post(self, request):
-        serializer = self.get_serializer(data=request.data)
+class LoginView(TokenObtainPairView):
+
+    def post(self, request, *args, **kwargs):
+        serializer = LoginSerializers(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user = serializer.user  
+        username = serializer.validated_data['username']
+        password = serializer.validated_data['password']
+        device_id = serializer.validated_data['device_id']
+        user_agent = serializer.validated_data.get('user_agent')
+
+        user = authenticate(username=username, password=password)
+
+        if user is None:
+            raise AuthenticationFailed("Login yoki parol noto'g'ri")
 
         if not user.is_active:
+            raise AuthenticationFailed("Foydalanuvchi bloklangan")
+
+        device, created = DeviceLock.objects.get_or_create(
+            user=user,
+            defaults={
+                "device_id": device_id,
+                "user_agent": user_agent
+            }
+        )
+
+        if not created and device.device_id != device_id:
             return Response(
-                {"detail": "User is not active"},
-                status=status.HTTP_401_UNAUTHORIZED
+                {"error": "Boshqa qurilmadan kirish taqiqlangan"},
+                status=403
             )
 
         refresh = RefreshToken.for_user(user)
 
         return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'role': user.role,
-            'id': user.id
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+            "user": {
+                "id": user.id,
+                "role": user.role
+            }
         })

@@ -9,12 +9,12 @@ class RoleChoice(models.TextChoices):
 
 
 class User(AbstractUser):
-    name = models.CharField()
-    surname = models.CharField()
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    role = models.CharField(max_length=20, choices=RoleChoice.choices)
     email = models.EmailField(unique=True)
     phone = PhoneNumberField(unique=True)
     image = models.ImageField(upload_to='user/',null=True,blank=True,default='default/default.png')
-    role = models.CharField(choices=RoleChoice.choices)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -40,3 +40,20 @@ class User(AbstractUser):
     class Meta:
         ordering = ['-pk']
 
+
+
+from django.db import models
+from django.conf import settings
+
+class DeviceLock(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="device_lock",
+    )
+    device_id   = models.CharField(max_length=255)   
+    user_agent  = models.CharField(max_length=300,null=True, blank=True)
+    created_at   = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} → {self.device_id}"

@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
-
 from rest_framework import serializers
+
+from .models import DeviceLock
 
 User = get_user_model()
 
@@ -46,3 +47,12 @@ class UserSetPasswordSerializers(serializers.Serializer):
             instance.save()
         
         return instance
+
+
+class LoginSerializers(serializers.ModelSerializer):
+    username = serializers.CharField(max_length=150)
+    password = serializers.CharField(max_length=128)
+
+    class Meta:
+        model = DeviceLock
+        fields = ['username','password','device_id','user_agent','created_at']
