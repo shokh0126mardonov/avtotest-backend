@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0002_devicelock'),
+        ("users", "0002_devicelock"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='devicelock',
-            name='ip_address',
+            model_name="devicelock",
+            name="ip_address",
         ),
     ]

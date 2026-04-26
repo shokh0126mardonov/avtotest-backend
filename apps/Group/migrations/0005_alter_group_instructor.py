@@ -6,16 +6,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('Group', '0004_alter_group_options_alter_group_instructor'),
+        ("Group", "0004_alter_group_options_alter_group_instructor"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='group',
-            name='instructor',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='instructed_groups', to=settings.AUTH_USER_MODEL),
+            model_name="group",
+            name="instructor",
+            field=models.OneToOneField(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="instructed_groups",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

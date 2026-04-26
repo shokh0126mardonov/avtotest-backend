@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from .models import Folder,MediaFile
+from .models import Folder, MediaFile
 
-admin.site.register([Folder,MediaFile])
+admin.site.register([Folder, MediaFile])

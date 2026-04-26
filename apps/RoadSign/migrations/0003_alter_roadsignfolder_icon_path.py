@@ -5,15 +5,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('RoadSign', '0002_alter_roadsign_icon_path_alter_roadsignfolder_name'),
+        ("RoadSign", "0002_alter_roadsign_icon_path_alter_roadsignfolder_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='roadsignfolder',
-            name='icon_path',
-            field=models.ImageField(upload_to=apps.RoadSign.models.roadsingfolder_upload_path),
+            model_name="roadsignfolder",
+            name="icon_path",
+            field=models.ImageField(
+                upload_to=apps.RoadSign.models.roadsingfolder_upload_path
+            ),
         ),
     ]

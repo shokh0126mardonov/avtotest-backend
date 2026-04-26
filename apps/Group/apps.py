@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class GroupConfig(AppConfig):
-    name = 'apps.Group'
+    name = "apps.Group"

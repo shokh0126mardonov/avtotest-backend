@@ -5,42 +5,66 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='TestCase',
+            name="TestCase",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('question_uz', models.TextField()),
-                ('question_uzk', models.TextField()),
-                ('question_ru', models.TextField()),
-                ('explanation_uz', models.TextField(blank=True, null=True)),
-                ('explanation_uzk', models.TextField(blank=True, null=True)),
-                ('explanation_ru', models.TextField(blank=True, null=True)),
-                ('media', models.FileField(blank=True, null=True, upload_to='TestCase/')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("question_uz", models.TextField()),
+                ("question_uzk", models.TextField()),
+                ("question_ru", models.TextField()),
+                ("explanation_uz", models.TextField(blank=True, null=True)),
+                ("explanation_uzk", models.TextField(blank=True, null=True)),
+                ("explanation_ru", models.TextField(blank=True, null=True)),
+                (
+                    "media",
+                    models.FileField(blank=True, null=True, upload_to="TestCase/"),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                'ordering': ['-pk'],
+                "ordering": ["-pk"],
             },
         ),
         migrations.CreateModel(
-            name='TestAnswer',
+            name="TestAnswer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('answer_text_uz', models.TextField(blank=True, null=True)),
-                ('answer_text_uzk', models.TextField(blank=True, null=True)),
-                ('answer_text_ru', models.TextField(blank=True, null=True)),
-                ('is_correct', models.BooleanField(default=False)),
-                ('test_case', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='answers', to='TestCase.testcase')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("answer_text_uz", models.TextField(blank=True, null=True)),
+                ("answer_text_uzk", models.TextField(blank=True, null=True)),
+                ("answer_text_ru", models.TextField(blank=True, null=True)),
+                ("is_correct", models.BooleanField(default=False)),
+                (
+                    "test_case",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="answers",
+                        to="TestCase.testcase",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-pk'],
+                "ordering": ["-pk"],
             },
         ),
     ]

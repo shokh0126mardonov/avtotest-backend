@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class FolderConfig(AppConfig):
-    name = 'apps.Folder'
+    name = "apps.Folder"

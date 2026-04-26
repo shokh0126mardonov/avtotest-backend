@@ -6,23 +6,42 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('Folder', '0001_initial'),
+        ("Folder", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='MediaFile',
+            name="MediaFile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to=apps.Folder.models.media_file_upload_path)),
-                ('file_name', models.CharField(blank=True, max_length=255)),
-                ('created_at', models.DateTimeField()),
-                ('folder', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='Folder.folder')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "file",
+                    models.FileField(
+                        upload_to=apps.Folder.models.media_file_upload_path
+                    ),
+                ),
+                ("file_name", models.CharField(blank=True, max_length=255)),
+                ("created_at", models.DateTimeField()),
+                (
+                    "folder",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="files",
+                        to="Folder.folder",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-pk'],
+                "ordering": ["-pk"],
             },
         ),
     ]

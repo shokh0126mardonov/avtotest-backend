@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('UserTest', '0002_alter_exam_options_alter_exam_table'),
+        ("UserTest", "0002_alter_exam_options_alter_exam_table"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='exam',
-            name='correct_answer',
+            model_name="exam",
+            name="correct_answer",
             field=models.PositiveSmallIntegerField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='exam',
-            name='total_count',
+            model_name="exam",
+            name="total_count",
             field=models.PositiveSmallIntegerField(blank=True, null=True),
         ),
     ]

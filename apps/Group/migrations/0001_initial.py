@@ -4,24 +4,33 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Group',
+            name="Group",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('description', models.TextField()),
-                ('image', models.ImageField(blank=True, null=True, upload_to='groups/')),
-                ('is_active', models.BooleanField(default=True)),
-                ('is_deleted', models.BooleanField(default=False)),
-                ('deleted_date', models.DateTimeField(blank=True, null=True)),
-                ('created_date', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("description", models.TextField()),
+                (
+                    "image",
+                    models.ImageField(blank=True, null=True, upload_to="groups/"),
+                ),
+                ("is_active", models.BooleanField(default=True)),
+                ("is_deleted", models.BooleanField(default=False)),
+                ("deleted_date", models.DateTimeField(blank=True, null=True)),
+                ("created_date", models.DateTimeField(auto_now_add=True)),
             ],
         ),
     ]

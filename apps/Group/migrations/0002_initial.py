@@ -6,23 +6,30 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('Group', '0001_initial'),
+        ("Group", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='group',
-            name='instructor',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='instructed_groups', to=settings.AUTH_USER_MODEL),
+            model_name="group",
+            name="instructor",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="instructed_groups",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='group',
-            name='users',
-            field=models.ManyToManyField(blank=True, related_name='group', to=settings.AUTH_USER_MODEL),
+            model_name="group",
+            name="users",
+            field=models.ManyToManyField(
+                blank=True, related_name="group", to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]

@@ -6,20 +6,26 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('Group', '0003_remove_group_deleted_date_remove_group_is_deleted'),
+        ("Group", "0003_remove_group_deleted_date_remove_group_is_deleted"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='group',
-            options={'ordering': ['-pk'], 'verbose_name': 'User Group'},
+            name="group",
+            options={"ordering": ["-pk"], "verbose_name": "User Group"},
         ),
         migrations.AlterField(
-            model_name='group',
-            name='instructor',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='instructed_groups', to=settings.AUTH_USER_MODEL, unique=True),
+            model_name="group",
+            name="instructor",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="instructed_groups",
+                to=settings.AUTH_USER_MODEL,
+                unique=True,
+            ),
         ),
     ]

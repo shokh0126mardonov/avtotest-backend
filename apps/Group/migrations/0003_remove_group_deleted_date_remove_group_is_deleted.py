@@ -4,18 +4,17 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('Group', '0002_initial'),
+        ("Group", "0002_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='group',
-            name='deleted_date',
+            model_name="group",
+            name="deleted_date",
         ),
         migrations.RemoveField(
-            model_name='group',
-            name='is_deleted',
+            model_name="group",
+            name="is_deleted",
         ),
     ]

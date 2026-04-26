@@ -6,25 +6,24 @@ class TestCase(models.Model):
     question_uzk = models.TextField()
     question_ru = models.TextField()
 
-    explanation_uz = models.TextField(null=True,blank=True)
-    explanation_uzk = models.TextField(null=True,blank=True)
-    explanation_ru = models.TextField(null=True,blank=True)
+    explanation_uz = models.TextField(null=True, blank=True)
+    explanation_uzk = models.TextField(null=True, blank=True)
+    explanation_ru = models.TextField(null=True, blank=True)
 
-    media = models.FileField(upload_to='TestCase/',null=True,blank=True)
+    media = models.FileField(upload_to="TestCase/", null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"TestCase {self.pk}#"
-    
+
     class Meta:
-        ordering = ['-pk']
+        ordering = ["-pk"]
+
 
 class TestAnswer(models.Model):
     test_case = models.ForeignKey(
-        TestCase,
-        on_delete=models.CASCADE,
-        related_name="answers"
+        TestCase, on_delete=models.CASCADE, related_name="answers"
     )
 
     answer_text_uz = models.TextField(null=True, blank=True)
@@ -37,4 +36,4 @@ class TestAnswer(models.Model):
         return f"Answer({self.id}) TestCase({self.test_case.pk})"
 
     class Meta:
-        ordering = ['-pk']
+        ordering = ["-pk"]

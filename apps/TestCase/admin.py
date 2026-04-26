@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from .models import TestAnswer,TestCase
+from .models import TestAnswer, TestCase
 
-admin.site.register([TestCase,TestAnswer])
+admin.site.register([TestCase, TestAnswer])

@@ -4,15 +4,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0003_remove_devicelock_ip_address'),
+        ("users", "0003_remove_devicelock_ip_address"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='devicelock',
-            old_name='locked_at',
-            new_name='created_at',
+            model_name="devicelock",
+            old_name="locked_at",
+            new_name="created_at",
         ),
     ]

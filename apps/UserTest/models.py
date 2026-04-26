@@ -1,19 +1,15 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from apps.TestCase.models import TestAnswer,TestCase
+from apps.TestCase.models import TestAnswer, TestCase
 
 User = get_user_model()
 
 
 class Exam(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="exams"
-    )
-    correct_answer = models.PositiveSmallIntegerField(null=True,blank=True)
-    total_count = models.PositiveSmallIntegerField(null=True,blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="exams")
+    correct_answer = models.PositiveSmallIntegerField(null=True, blank=True)
+    total_count = models.PositiveSmallIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -21,19 +17,15 @@ class Exam(models.Model):
 
     def __str__(self):
         return f"Exam {self.id} - User {self.user_id}"
-    
+
+
 class ExamTestCase(models.Model):
-    
     exam = models.ForeignKey(
-        Exam,
-        on_delete=models.CASCADE,
-        related_name="exam_test_cases"
+        Exam, on_delete=models.CASCADE, related_name="exam_test_cases"
     )
 
     test_case = models.ForeignKey(
-        TestCase,
-        on_delete=models.CASCADE,
-        related_name="exam_links"
+        TestCase, on_delete=models.CASCADE, related_name="exam_links"
     )
 
     selected_answer = models.ForeignKey(
@@ -41,7 +33,7 @@ class ExamTestCase(models.Model):
         on_delete=models.CASCADE,
         related_name="selected_in_exams",
         null=True,
-        blank=True
+        blank=True,
     )
 
     class Meta:

@@ -6,39 +6,91 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('TestCase', '0001_initial'),
+        ("TestCase", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Exam',
+            name="Exam",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='exams', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="exams",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'db_table': 'exam',
-                'ordering': ['-created_at'],
+                "db_table": "exam",
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='ExamTestCase',
+            name="ExamTestCase",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('exam', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='exam_test_cases', to='UserTest.exam')),
-                ('selected_answer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='selected_in_exams', to='TestCase.testanswer')),
-                ('test_case', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='exam_links', to='TestCase.testcase')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "exam",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="exam_test_cases",
+                        to="UserTest.exam",
+                    ),
+                ),
+                (
+                    "selected_answer",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="selected_in_exams",
+                        to="TestCase.testanswer",
+                    ),
+                ),
+                (
+                    "test_case",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="exam_links",
+                        to="TestCase.testcase",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'exam_test_case',
-                'indexes': [models.Index(fields=['exam'], name='exam_test_c_exam_id_5170e0_idx'), models.Index(fields=['test_case'], name='exam_test_c_test_ca_c08223_idx')],
-                'unique_together': {('exam', 'test_case')},
+                "db_table": "exam_test_case",
+                "indexes": [
+                    models.Index(
+                        fields=["exam"], name="exam_test_c_exam_id_5170e0_idx"
+                    ),
+                    models.Index(
+                        fields=["test_case"], name="exam_test_c_test_ca_c08223_idx"
+                    ),
+                ],
+                "unique_together": {("exam", "test_case")},
             },
         ),
     ]

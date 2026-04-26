@@ -5,51 +5,83 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='RoadSignFolder',
+            name="RoadSignFolder",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('icon_path', models.ImageField(upload_to='RoadSignFolder/')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='RoadSign.roadsignfolder')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("icon_path", models.ImageField(upload_to="RoadSignFolder/")),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "parent",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="children",
+                        to="RoadSign.roadsignfolder",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'road_sign_folders',
+                "db_table": "road_sign_folders",
             },
         ),
         migrations.CreateModel(
-            name='RoadSign',
+            name="RoadSign",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('code', models.CharField(blank=True, max_length=50, null=True)),
-                ('icon_path', models.ImageField(upload_to='RoadSign/')),
-                ('description', models.TextField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('folder', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='road_signs', to='RoadSign.roadsignfolder')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("code", models.CharField(blank=True, max_length=50, null=True)),
+                ("icon_path", models.ImageField(upload_to="RoadSign/")),
+                ("description", models.TextField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "folder",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="road_signs",
+                        to="RoadSign.roadsignfolder",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'road_signs',
+                "db_table": "road_signs",
             },
         ),
         migrations.AddIndex(
-            model_name='roadsignfolder',
-            index=models.Index(fields=['parent'], name='road_sign_f_parent__8a1850_idx'),
+            model_name="roadsignfolder",
+            index=models.Index(
+                fields=["parent"], name="road_sign_f_parent__8a1850_idx"
+            ),
         ),
         migrations.AddIndex(
-            model_name='roadsign',
-            index=models.Index(fields=['folder'], name='road_signs_folder__5c2aea_idx'),
+            model_name="roadsign",
+            index=models.Index(fields=["folder"], name="road_signs_folder__5c2aea_idx"),
         ),
         migrations.AddIndex(
-            model_name='roadsign',
-            index=models.Index(fields=['code'], name='road_signs_code_0dae92_idx'),
+            model_name="roadsign",
+            index=models.Index(fields=["code"], name="road_signs_code_0dae92_idx"),
         ),
     ]
