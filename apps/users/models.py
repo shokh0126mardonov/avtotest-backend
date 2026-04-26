@@ -52,7 +52,7 @@ class DeviceLock(models.Model):
         related_name="device_lock",
     )
 
-    telegram_id = models.BigIntegerField(null=True,blank=True)
+    telegram_id = models.BigIntegerField(null=True,blank=True,unique=True)
     device_id   = models.CharField(max_length=255,null=True)   
     user_agent  = models.CharField(max_length=300,null=True, blank=True)
     created_at   = models.DateTimeField(auto_now_add=True)

@@ -2,30 +2,24 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 
-
+from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 
 
-from .serializers import UserSerializers,UserCreateSerializers,GetByUsername,UserSetPasswordSerializers,LoginSerializers
-from .permissions import AdminPermissions,StudentPermissions,InstructorPermissions
+from .serializers import UserSerializers,UserCreateSerializers,GetByUsername,UserSetPasswordSerializers,LoginSerializers,LogoutSerializers
+from .permissions import AdminPermissions
 from .models import DeviceLock
 
 User = get_user_model()
-
-
-from rest_framework.response import Response
-from rest_framework import status
-
-
 
 class UserApiViewSets(ModelViewSet):
     pagination_class = PageNumberPagination
@@ -43,9 +37,6 @@ class UserApiViewSets(ModelViewSet):
         if self.action in ["create"]:
             return UserCreateSerializers
         return UserSerializers
-    
-
-    
 
 
 class UserApiView(ModelViewSet):
@@ -132,3 +123,32 @@ class LoginView(TokenObtainPairView):
             "access_token": str(token.access_token),
             "refresh": str(token)
         })
+    
+class LogoutViews(APIView):
+    def post(self,request:Request)->Response:
+        serializer = LogoutSerializers(data = request.data)
+        serializer.is_valid(raise_exception=True)
+
+        device_id = serializer.validated_data.get('device_id')
+        telegram_id = serializer.validated_data.get('telegram_id')
+
+        if telegram_id:
+            device = DeviceLock.objects.filter(telegram_id = telegram_id).first()
+            if device:
+                device.telegram_id = None
+                device.save()
+                return Response(status=204)
+            
+            elif device is None:
+                return Response('bu telegram id bazada mavjud emas!',status=400)
+        
+        elif device_id:
+            device = DeviceLock.objects.filter(device_id = device_id).first()
+
+            if device:
+                device.device_id = None
+                device.save()
+                return Response(status=204)
+            
+            elif device is None:
+                return Response('bu device id bazada mavjud emas!',status=400)

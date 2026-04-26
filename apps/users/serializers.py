@@ -69,3 +69,18 @@ class LoginSerializers(serializers.ModelSerializer):
             )
 
         return attrs
+    
+class LogoutSerializers(serializers.Serializer):
+    device_id = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
+    telegram_id = serializers.IntegerField(required=False, allow_null=True)
+
+    def validate(self, attrs):
+        device_id = attrs.get('device_id')
+        telegram_id = attrs.get('telegram_id')
+
+        if not device_id and telegram_id is None:
+            raise serializers.ValidationError(
+                "telegram_id yoki device_id dan bittasi yuborilishi shart!"
+            )
+
+        return attrs
