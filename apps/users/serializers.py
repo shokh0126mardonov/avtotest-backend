@@ -52,7 +52,20 @@ class UserSetPasswordSerializers(serializers.Serializer):
 class LoginSerializers(serializers.ModelSerializer):
     username = serializers.CharField(max_length=150)
     password = serializers.CharField(max_length=128)
+    device_id = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
+    telegram_id = serializers.IntegerField(required=False, allow_null=True)
 
     class Meta:
         model = DeviceLock
-        fields = ['username','password','device_id','user_agent','created_at']
+        fields = ['username','password','device_id','user_agent','created_at','telegram_id']
+
+    def validate(self, attrs):
+        device_id = attrs.get('device_id')
+        telegram_id = attrs.get('telegram_id')
+
+        if not device_id and telegram_id is None:
+            raise serializers.ValidationError(
+                "telegram_id yoki device_id dan bittasi yuborilishi shart!"
+            )
+
+        return attrs

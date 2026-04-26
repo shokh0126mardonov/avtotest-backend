@@ -51,7 +51,9 @@ class DeviceLock(models.Model):
         on_delete=models.CASCADE,
         related_name="device_lock",
     )
-    device_id   = models.CharField(max_length=255)   
+
+    telegram_id = models.BigIntegerField(null=True,blank=True)
+    device_id   = models.CharField(max_length=255,null=True)   
     user_agent  = models.CharField(max_length=300,null=True, blank=True)
     created_at   = models.DateTimeField(auto_now_add=True)
 

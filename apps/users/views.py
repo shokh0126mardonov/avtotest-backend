@@ -79,9 +79,8 @@ class UserApiView(ModelViewSet):
         serializer = self.get_serializer(instance=request.user,data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response('ok dabba')
+        return Response(status=201)
     
-
 
 class LoginView(TokenObtainPairView):
 
@@ -91,7 +90,8 @@ class LoginView(TokenObtainPairView):
 
         username = serializer.validated_data['username']
         password = serializer.validated_data['password']
-        device_id = serializer.validated_data['device_id']
+        device_id = serializer.validated_data.get('device_id')
+        telegram_id = serializer.validated_data.get('telegram_id')
         user_agent = serializer.validated_data.get('user_agent')
 
         user = authenticate(username=username, password=password)
@@ -100,29 +100,35 @@ class LoginView(TokenObtainPairView):
             raise AuthenticationFailed("Login yoki parol noto'g'ri")
 
         if not user.is_active:
-            raise AuthenticationFailed("Foydalanuvchi bloklangan")
+            raise AuthenticationFailed("Foydalanuvchi aktiv emas")
 
-        device, created = DeviceLock.objects.get_or_create(
-            user=user,
-            defaults={
-                "device_id": device_id,
-                "user_agent": user_agent
-            }
-        )
+        device = DeviceLock.objects.filter(user=user).first()
 
-        if not created and device.device_id != device_id:
-            return Response(
-                {"error": "Boshqa qurilmadan kirish taqiqlangan"},
-                status=403
+        if device is None:
+            device = DeviceLock.objects.create(
+                user=user,
+                device_id=device_id,
+                telegram_id=telegram_id,
+                user_agent=user_agent
             )
 
-        refresh = RefreshToken.for_user(user)
+        if telegram_id:
+            if device.telegram_id is None:
+                device.telegram_id = telegram_id
+                device.save(update_fields=['telegram_id'])
+            elif device.telegram_id != telegram_id:
+                return Response("Siz boshqa telegramga ulangan qurilmadasiz", status=403)
+
+        if device_id:
+            if device.device_id is None:
+                device.device_id = device_id
+                device.save(update_fields=['device_id'])
+            elif device.device_id != device_id:
+                return Response("Siz boshqa qurilmaga biriktirilgansiz", status=403)
+
+        token = RefreshToken.for_user(user)
 
         return Response({
-            "access": str(refresh.access_token),
-            "refresh": str(refresh),
-            "user": {
-                "id": user.id,
-                "role": user.role
-            }
+            "access_token": str(token.access_token),
+            "refresh": str(token)
         })
