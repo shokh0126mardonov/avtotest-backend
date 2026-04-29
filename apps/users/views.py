@@ -113,20 +113,30 @@ class LoginView(TokenObtainPairView):
                 device.save(update_fields=["telegram_id"])
             elif device.telegram_id != telegram_id:
                 return Response(
-                    "Siz boshqa telegramga ulangan qurilmadasiz", status=403
-                )
+                {"error": "Siz boshqa telegramga ulangan qurilmadasiz"},
+                status=403
+            )
 
         if device_id:
             if device.device_id is None:
                 device.device_id = device_id
                 device.save(update_fields=["device_id"])
             elif device.device_id != device_id:
-                return Response("Siz boshqa qurilmaga biriktirilgansiz", status=403)
+                return Response(
+                    {"error": "Siz boshqa telegramga ulangan qurilmadasiz"},
+                    status=403
+                )
 
         token = RefreshToken.for_user(user)
 
         return Response(
-            {"access_token": str(token.access_token), "refresh": str(token)}
+            {
+            "access": str(token.access_token),
+            "refresh": str(token),
+            "id":user.pk,
+            "role":str(user.role)
+            },
+            status=200
         )
 
 
